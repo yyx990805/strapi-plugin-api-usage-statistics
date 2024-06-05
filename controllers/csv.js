@@ -53,7 +53,7 @@ module.exports = {
           FROM statistics
           WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
           GROUP BY resource, "year", "month"
-        `.replace("'2023-09-09'", '?').replace("'2024-09-09'", '?'), [startDate, endDate]);
+        `.replace("'2023-09-01'", '?').replace("'2024-09-31'", '?'), [startDate, endDate]);
       }
       if (0) {
         stats = await strapi.db.connection.raw(`
