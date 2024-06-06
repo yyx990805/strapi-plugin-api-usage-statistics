@@ -6,7 +6,7 @@ const gatherStatsMiddleware = require('./middlewares/index');
 export default {
   register(app) {
 
-    strapi.server.use(gatherStatsMiddleware.gatherStats);
+    app.strapi.server.use(gatherStatsMiddleware.gatherStats);
 
     app.addMenuLink({
       // to: `/plugins/${pluginId}/download`,
