@@ -60,9 +60,9 @@ module.exports = {
             `}
             sum(counter) as "sum_counter"
           FROM statistics
-          WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
+          WHERE "day" > '2023-09-01' AND "day" <= '2024-09-30'
           GROUP BY resource, res_id, "year", "month"
-        `.replace("'2023-09-01'", '?').replace("'2024-09-31'", '?'), [startDate, endDate]);
+        `.replace("'2023-09-01'", '?').replace("'2024-09-30'", '?'), [startDate, endDate]);
       }
       if (0) {
         stats = await strapi.db.connection.raw(`
