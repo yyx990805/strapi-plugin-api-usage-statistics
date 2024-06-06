@@ -36,6 +36,7 @@ module.exports = {
         const endDate = `2024-09-09`;
         `
         SELECT resource,
+          res_id,
           strftime('%Y', "day") AS "year",
           strftime('%m', "day") AS "month",
           sum(counter) as "sum_counter"
@@ -43,16 +44,24 @@ module.exports = {
         WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
         GROUP BY resource, "year", "month"      
         `;
+        let engine = strapi.db.config.connection.client
+        let overrideCalcFuncs = '';
+        if (engine === 'postgres') {
+          overrideCalcFuncs = `
+            EXTRACT(YEAR FROM "day") AS "year",
+            EXTRACT(MONTH FROM "day") AS "month",`;
+        }
         stats = await strapi.db.connection.raw(`
           SELECT resource,
-            -- EXTRACT(MONTH FROM "day") AS "month", -- postgres
-            -- EXTRACT(DAY FROM "day") AS "day", -- postgres
+            res_id,
+            ${overrideCalcFuncs || `
             strftime('%Y', "day") AS "year",
             strftime('%m', "day") AS "month",
+            `}
             sum(counter) as "sum_counter"
           FROM statistics
           WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
-          GROUP BY resource, "year", "month"
+          GROUP BY resource, res_id, "year", "month"
         `.replace("'2023-09-01'", '?').replace("'2024-09-31'", '?'), [startDate, endDate]);
       }
       if (0) {

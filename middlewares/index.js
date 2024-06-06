@@ -17,6 +17,10 @@ const gatherStats = (options, { strapi }) => {
       // const route = strapi.server.router.stack.find(e => e.path.includes(ctx.req.url))
       // strapi.server.router.stack[0].path
 
+      const additional = ctx.query?.filters?.id?.['$eq'] !== undefined ? {
+        resId: parseInt(ctx.query.filters.id['$eq']),
+      } : {};
+
       if (typeof controller === 'string') {
         const currentDate = new Date().toISOString().split('T')[0]
         ctx.res.setHeader('tracked-resource-entity-type', `${controller.replace(/:/g, '_')}`);
@@ -24,6 +28,7 @@ const gatherStats = (options, { strapi }) => {
           where: {
             day: currentDate,
             resource: controller,
+            ...additional,
           }
         });
 
@@ -40,6 +45,7 @@ const gatherStats = (options, { strapi }) => {
               data: {
                 resource: controller,
                 day: currentDate,
+                ...additional,
                 counter: 1,
               },
             });
@@ -48,7 +54,7 @@ const gatherStats = (options, { strapi }) => {
           }
         }
       }
-      // await next(); // quiz
+      // await next(); // quiz (whats wrong with executing it here? it executes this middleware before request is handled)
     } else {
       await next();
     }
