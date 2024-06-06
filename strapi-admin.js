@@ -1,12 +1,9 @@
 const pluginId = 'strapi-plugin-api-usage-statistics';
 import React from 'react';
 
-const gatherStatsMiddleware = require('./middlewares/index');
 
 export default {
   register(app) {
-
-    app.strapi.server.use(gatherStatsMiddleware.gatherStats);
 
     app.addMenuLink({
       // to: `/plugins/${pluginId}/download`,

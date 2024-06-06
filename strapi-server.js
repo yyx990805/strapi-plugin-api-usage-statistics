@@ -7,6 +7,7 @@ module.exports = () => ({
     // jsonInteractiveResponseMiddleware({ strapi });
   },
   register({ strapi }) {
+    strapi.server.use(middlewares.gatherStats);
     if(0) strapi.server.routes([
       {
         method: 'GET',
