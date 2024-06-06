@@ -4,10 +4,10 @@ const routes = require('./routes/index');
 
 module.exports = () => ({
   async bootstrap({ strapi }) {
+    strapi.server.use(middlewares.gatherStats);
     // jsonInteractiveResponseMiddleware({ strapi });
   },
-  register({ strapi }) {
-    strapi.server.use(middlewares.gatherStats);
+  register(/** @typeof ({ strapi: import('@strapi/strapi').Strapi }) */{ strapi }) {
     if(0) strapi.server.routes([
       {
         method: 'GET',
