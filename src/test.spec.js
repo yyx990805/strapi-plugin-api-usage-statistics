@@ -9,4 +9,7 @@ describe('', () => {
     fetch(`/strapi-plugin-api-usage-statistics/stats.csv`);
   })
   it.todo('catch visits to the pages')
+  it('update should be exposed to the outer world')
+  it('there\'s additional endpoint analytics.logRequest /strapi-plugin-api-usage-statistics/log handling controller and resId')
+  it('it is possible to seamlessly integrate nextjs (middleware, so even for static pages)')
 })

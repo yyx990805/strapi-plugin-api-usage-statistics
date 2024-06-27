@@ -10,5 +10,14 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: 'POST',
+      path: '/log',
+      handler: 'analytics.logRequest',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
   ],
 }.routes;
