@@ -77,7 +77,7 @@ module.exports = {
           GROUP BY "year", "month"
         `)
       }
-      const csvData = stats.map(row => {
+      const csvData = (stats?.rows || stats).map(row => {
         return Object.values(row).join(';')
       }).join('\n');
       ctx.set('Content-Type', 'text/plain');
