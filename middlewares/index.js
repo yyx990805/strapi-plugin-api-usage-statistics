@@ -17,9 +17,25 @@ const gatherStats = (options, { strapi }) => {
       // const route = strapi.server.router.stack.find(e => e.path.includes(ctx.req.url))
       // strapi.server.router.stack[0].path
 
-      const additional = ctx.query?.filters?.id?.['$eq'] !== undefined ? {
-        resId: parseInt(ctx.query.filters.id['$eq']),
-      } : {};
+      let additional = 0;
+      if (ctx.query?.filters?.id?.['$eq'] !== undefined) {
+        additional = {
+          resId: parseInt(ctx.query.filters.id['$eq']),
+        };
+      }
+      /*
+      if (0) {
+        if (ctx.query?.filters?.id?.['$lt'] !== undefined) {
+          if (ctx.query.pagination.pageSize == '1') {
+            additional = {
+              resId: parseInt(ctx.query.filters.id['$lt']),
+            };
+          } else {
+            console.warn('only pageSize=1')
+          }
+        }
+      }
+      */
 
       if (typeof controller === 'string') {
         const currentDate = new Date().toISOString().split('T')[0]
