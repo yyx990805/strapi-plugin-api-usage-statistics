@@ -11,6 +11,20 @@ async function update(controller, ctx, strapi) {
       resId: parseInt(ctx.query.filters.id['$eq']),
     };
   }
+  // debugger
+  const authorizationHeader = ctx.request.header.authorization;
+  if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+    const token = authorizationHeader.split(' ')[1];
+    // ctx.response.set('X-Token-ID', token);
+    // additional['tokenId'] = token
+    const tokenEntry = await strapi.query('api::api-token.api-token').findOne({
+      where: { token: token },
+    });
+    Object.assign(additional, {
+      tokenId: tokenEntry.id.toString(),
+    })
+  }
+  
   /*
   if (0) {
     if (ctx.query?.filters?.id?.['$lt'] !== undefined) {
