@@ -5,7 +5,7 @@
 async function update(controller, ctx, strapi) {
   const currentDate = new Date().toISOString().split('T')[0]
 
-  let additional = 0;
+  let additional = {};
   if (ctx.query?.filters?.id?.['$eq'] !== undefined) {
     additional = {
       resId: parseInt(ctx.query.filters.id['$eq']),
@@ -13,13 +13,29 @@ async function update(controller, ctx, strapi) {
   }
   // debugger
   const authorizationHeader = ctx.request.header.authorization;
-  if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+  if (1 && authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
     const token = authorizationHeader.split(' ')[1];
     // ctx.response.set('X-Token-ID', token);
     // additional['tokenId'] = token
-    const tokenEntry = await strapi.query('api::api-token.api-token').findOne({
-      where: { token: token },
-    });
+    // debugger
+    // const s = require('@strapi')
+
+    const getService = () => strapi.service('admin::api-token')
+    // const d = require('@strapi/admin')
+    /** @typedef {import('@strapi/admin/server/services/api-token')} Api */
+    const serv = /** @type {Api} */ getService()
+    if(0) {
+    require('/home/art/oz-openzacheta/zacheta/strapi/node_modules/.pnpm/@strapi+admin@4.5.2_patch_hash=zapne4ki5wl36hcylcnovdloyy_@strapi+strapi@4.5.2_@types+node@17_3kggsftlnomm7y6ujkneecdfpm/node_modules/@strapi/admin/server/services/api-token.js')
+    const r = require('@strapi/admin/server/services/api-token')
+    }
+    const allTokens = await serv.list()
+    const tokenEntry = await serv.getBy({
+      accessKey: token,
+      access_key: token,
+    })
+    // const tokenEntry = await strapi.query('api::api-token.api-token').findOne({
+    //   where: { token: token },
+    // })
     Object.assign(additional, {
       tokenId: tokenEntry.id.toString(),
     })
