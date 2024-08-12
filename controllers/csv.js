@@ -42,7 +42,7 @@ module.exports = {
           sum(counter) as "sum_counter"
         FROM statistics
         WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
-        GROUP BY resource, "year", "month"      
+        GROUP BY resource, "year", "month", "tokenId"
         `;
         let engine = strapi.db.config.connection.client
         let overrideCalcFuncs = '';
@@ -62,7 +62,7 @@ module.exports = {
               sum(counter) as "sum_counter"
             FROM statistics
             WHERE "day" > '2023-09-01' AND "day" <= '2024-09-30'
-            GROUP BY resource, res_id, "year", "month"
+            GROUP BY resource, res_id, "year", "month", "tokenId"
           `.replace("'2023-09-01'", '?').replace("'2024-09-30'", '?'), [startDate, endDate]);
         } else {
           stats = await strapi.db.connection.raw(`
@@ -73,7 +73,7 @@ module.exports = {
               sum(counter) as "sum_counter"
             FROM statistics
             WHERE "day" > '2023-09-01' AND "day" <= '2024-09-30'
-            GROUP BY resource, res_id, "year", "month"
+            GROUP BY resource, res_id, "year", "month", "tokenId"
           `.replace("'2023-09-01'", '?').replace("'2024-09-30'", '?'), [startDate, endDate]);
         }
       }
