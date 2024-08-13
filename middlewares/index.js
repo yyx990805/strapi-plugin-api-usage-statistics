@@ -69,6 +69,7 @@ async function update(controller, ctx, strapi) {
   });
 
   if (existingLogEntry) {
+    // TODO prevent race condition and call UPDATE SET counter=counter+1 WHERE id=:id
     await strapi.query('api::stat.stat').update({
       where: { id: existingLogEntry.id },
       data: {
