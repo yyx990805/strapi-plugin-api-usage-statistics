@@ -29,16 +29,21 @@ async function update(controller, ctx, strapi) {
     const r = require('@strapi/admin/server/services/api-token')
     }
     const allTokens = await serv.list()
+    // TODO ctx.state.auth
+    const tokenHash = serv.hash(token)
     const tokenEntry = await serv.getBy({
-      accessKey: token,
-      access_key: token,
+      accessKey: tokenHash,
+      access_key: tokenHash,
     })
     // const tokenEntry = await strapi.query('api::api-token.api-token').findOne({
     //   where: { token: token },
     // })
-    Object.assign(additional, {
-      tokenId: tokenEntry.id.toString(),
-    })
+    if (ctx.state?.auth?.credentials?.id !== undefined) {
+      Object.assign(additional, {
+        // tokenId: tokenEntry.id.toString(),
+        tokenId: ctx.state.auth.credentials.id,
+      })
+    }
   }
   
   /*
