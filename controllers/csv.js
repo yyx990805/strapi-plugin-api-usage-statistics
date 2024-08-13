@@ -35,14 +35,16 @@ module.exports = {
         const startDate = `2023-09-09`;
         const endDate = `2024-09-09`;
         `
-        SELECT resource,
+        SELECT
+          token_id,
+          resource,
           res_id,
           strftime('%Y', "day") AS "year",
           strftime('%m', "day") AS "month",
           sum(counter) as "sum_counter"
         FROM statistics
         WHERE "day" > '2023-09-01' AND "day" <= '2024-09-31'
-        GROUP BY resource, "year", "month", "tokenId"
+        GROUP BY resource, "year", "month", "token_id"
         `;
         let engine = strapi.db.config.connection.client
         let overrideCalcFuncs = '';
@@ -53,7 +55,9 @@ module.exports = {
         }
         if (engine === 'postgres') {
           stats = await strapi.db.connection.raw(`
-            SELECT resource,
+            SELECT
+              token_id,
+              resource,
               res_id,
               ${overrideCalcFuncs || `
               strftime('%Y', "day") AS "year",
@@ -62,18 +66,20 @@ module.exports = {
               sum(counter) as "sum_counter"
             FROM statistics
             WHERE "day" > '2023-09-01' AND "day" <= '2024-09-30'
-            GROUP BY resource, res_id, "year", "month", "tokenId"
+            GROUP BY resource, res_id, "year", "month", "token_id"
           `.replace("'2023-09-01'", '?').replace("'2024-09-30'", '?'), [startDate, endDate]);
         } else {
           stats = await strapi.db.connection.raw(`
-            SELECT resource,
+            SELECT 
+              token_id,
+              resource,
               res_id,
               strftime('%Y', "day") AS "year",
               strftime('%m', "day") AS "month",
               sum(counter) as "sum_counter"
             FROM statistics
             WHERE "day" > '2023-09-01' AND "day" <= '2024-09-30'
-            GROUP BY resource, res_id, "year", "month", "tokenId"
+            GROUP BY resource, res_id, "year", "month", "token_id"
           `.replace("'2023-09-01'", '?').replace("'2024-09-30'", '?'), [startDate, endDate]);
         }
       }
