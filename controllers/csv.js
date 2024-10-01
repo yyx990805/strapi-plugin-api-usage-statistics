@@ -33,7 +33,7 @@ module.exports = {
       if (1) {
         const reportYear = ctx.req.query || '2024';
         const startDate = `2023-09-09`;
-        const endDate = `2024-09-09`;
+        const endDate = `2024-12-31`;
         `
         SELECT
           token_id,
